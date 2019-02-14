@@ -299,7 +299,6 @@ contract Crowdsale is Ownable, Pausable, Whitelisted {
   uint256 public partnershipsTimeLock;
   uint256 public reserveTimeLock;
   uint256 public cap;
-  uint256 flashSaleLimit;
   bool public checkBurnTokens;
   bool public upgradeICOSupply;
 
@@ -338,7 +337,6 @@ contract Crowdsale is Ownable, Pausable, Whitelisted {
     upgradeICOSupply = false;
     minPurchase = 1 ether;
     maxPurchase = 50 ether;
-    flashSaleLimit = 500;
     vault = new RefundVault();
   }
   function createTokenContract() internal returns (MintableToken) {
@@ -459,8 +457,6 @@ contract Crowdsale is Ownable, Pausable, Whitelisted {
     partnershipsTimeLock = preStartTime.add(3 minutes);
   }
   function flashSale(uint256 _flashSaleStartTime, uint256 _flashSaleEndTime, uint256 _flashSaleBonus) onlyOwner external {
-    require(flashSaleLimit > 0);
-    flashSaleLimit = flashSaleLimit.sub(1);
     flashSaleStartTime = _flashSaleStartTime;
     flashSaleEndTime = _flashSaleEndTime;
     flashSaleBonus = _flashSaleBonus;
@@ -579,7 +575,7 @@ contract RefundableCrowdsale is Crowdsale {
 
 contract Dayta is MintableToken {
   string public constant name = "DAYTA";
-  string public constant symbol = "XPD";
+  string public constant symbol = "DAYTA";
   uint8 public constant decimals = 18;
   uint256 public _totalSupply = 2500000000E18;
   constructor() public {
